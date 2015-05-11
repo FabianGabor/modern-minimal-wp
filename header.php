@@ -92,7 +92,7 @@
 
 <body <?php body_class(); ?>>
 <div id="main">
-<div <?php body_class(''); ?>>
+
 	<header id="header" class="site-header" role="banner">
 
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><img id="logo" class="icon icon-circle icon-bordered" src="<?php echo get_template_directory_uri(); ?>/img/logo-100x100.png" width="100" height="100" alt="Fábián Gábor logo"></a>

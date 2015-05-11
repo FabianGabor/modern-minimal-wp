@@ -9,7 +9,7 @@
 ?>
 
 
-</div><!-- End body_class -->
+
 </div><!-- #main -->
 
 <?php wp_footer(); ?>
@@ -94,10 +94,6 @@ if(is_single() || is_page( array( 'oneletrajz', 'Önéletrajz' ) ) ) {
 <?php
 }
 ?>
-
-
-
-
 
 </body>
 </html>

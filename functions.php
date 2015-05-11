@@ -125,6 +125,8 @@ function modern_minimal_scripts() {
 	
 	wp_register_script( 'modern-minimal-smoothState', 'https://rawgit.com/miguel-perez/jquery.smoothState.js/master/jquery.smoothState.js', array( 'jquery' ), null, true );
 	
+	wp_register_script( 'modern-minimal-instantclick', 'http://instantclick.io/v3.1.0/instantclick.min.js', array( 'jquery' ), null, true );
+	
 	wp_register_script( 'modern-minimal-owlcarousel', get_template_directory_uri() . '/js/owl.carousel.min.js', array( 'jquery' ), null, true );
 	
 	
@@ -139,7 +141,8 @@ function modern_minimal_scripts() {
 	
 	wp_enqueue_script( 'modern-minimal-modernizr' );	
 	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'modern-minimal-smoothState' );
+	//wp_enqueue_script( 'modern-minimal-smoothState' );
+	//wp_enqueue_script( 'modern-minimal-instantclick' );
 	wp_enqueue_script( 'modern-minimal-owlcarousel' );
 	
 	wp_enqueue_script( 'modern-minimal-cv' );
@@ -425,3 +428,6 @@ function my_theme_infinite_scroll_settings( $args ) {
     return $args;
 }
 add_filter( 'infinite_scroll_settings', 'my_theme_infinite_scroll_settings' );
+
+
+

@@ -6,7 +6,7 @@
 
 get_header(); ?>
 
-<div id="container" class="oneletrajz scene_element scene_element--fadein">
+<div id="container" class="oneletrajz scene_element scene_element--fadein" data-no-instant>
 		
 	<ul id="section-nav" class="section-nav">
 		<li><a href="#rolam">Rólam</a></li>
