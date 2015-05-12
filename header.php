@@ -27,9 +27,15 @@
 		color: #fff !important;
 		position: fixed;
 		left: 50%;
-		bottom: 0;
+		bottom: 1.625rem;
 		text-indent: 0 !important;
+		//display: block !important;
 	}
+	.infinite-loader .spinner {
+		margin-left: 0 !important;
+	}
+	
+	
 
 	[data-src] { background-image: none !important; }
 	[data-src]:after { background-image: none !important; }
@@ -46,7 +52,10 @@
 	foreach ( $menu_items as $key => $menu_item ) {		
 		$thumb_url = wp_get_attachment_image_src( get_post_thumbnail_id( $menu_item->object_id ), 'medium' );
 		$thumb_url = $thumb_url[0];
-		$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
+		if ( $thumb_url !== '' )
+			$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
+		else
+			$output .= '';
 	}
 	echo $output;
 	?>
@@ -57,7 +66,10 @@
 		foreach ( $menu_items as $key => $menu_item ) {		
 			$thumb_url = wp_get_attachment_image_src( get_post_thumbnail_id( $menu_item->object_id ), 'full' );
 			$thumb_url = $thumb_url[0];
-			$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
+			if ( $thumb_url !== '' )
+				$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
+			else
+				$output .= '';
 		}
 		echo $output;
 		?>
@@ -69,7 +81,7 @@
 		$bg_url = $bg_url[0];
 	?>
 		body::after {
-			background: url("<?php echo $bg_url; ?>") no-repeat fixed center center / cover  rgba(0, 0, 0, 0) !important;
+			background: url("<?php echo $bg_url; ?>") no-repeat fixed center center / cover transparent !important;
 		}
 	
 		@media only screen and (min-width:64.063em) {
@@ -78,7 +90,37 @@
 			$bg_url = $bg_url[0];
 			?>
 			body::after {
-				background: url("<?php echo $bg_url; ?>") no-repeat fixed center center / cover  rgba(0, 0, 0, 0) !important;
+				background: url("<?php echo $bg_url; ?>") no-repeat fixed center center / cover transparent !important;
+			}
+		}
+	<?php
+	}
+	?>
+	
+	<?php
+	if (is_page( array( 'kapcsolat', 'Kapcsolat' ))) {
+		$bg_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'medium' );
+		$bg_url = $bg_url[0];
+	?>
+		body::after {
+			background: url("<?php echo $bg_url; ?>") no-repeat fixed center center / cover transparent !important;
+			content: '';
+			display: block;
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			opacity: .5;
+			z-index: -1;
+			filter: blur(5px);
+		}
+	
+		@media only screen and (min-width:64.063em) {
+			<?php
+			$bg_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full' );
+			$bg_url = $bg_url[0];
+			?>
+			body::after {
+				background: url("<?php echo $bg_url; ?>") no-repeat fixed center center / cover transparent !important;
 			}
 		}
 	<?php
@@ -90,8 +132,8 @@
 <?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
-<div id="main">
+<body <?php body_class(); ?> id="main">
+
 
 	<header id="header" class="site-header" role="banner">
 

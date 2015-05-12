@@ -22,6 +22,45 @@ if ( ! function_exists( 'modern_minimal_setup' ) ) :
  */
 function modern_minimal_setup() {
 	
+// First, make sure Jetpack doesn't concatenate all its CSS
+add_filter( 'jetpack_implode_frontend_css', '__return_false' );
+
+// Then, remove each CSS file, one at a time
+function jeherve_remove_all_jp_css() {
+  wp_deregister_style( 'AtD_style' ); // After the Deadline
+  wp_deregister_style( 'jetpack_likes' ); // Likes
+  wp_deregister_style( 'jetpack_related-posts' ); //Related Posts
+  wp_deregister_style( 'jetpack-carousel' ); // Carousel
+  wp_deregister_style( 'grunion.css' ); // Grunion contact form
+  wp_deregister_style( 'the-neverending-homepage' ); // Infinite Scroll
+  wp_deregister_style( 'infinity-twentyten' ); // Infinite Scroll - Twentyten Theme
+  wp_deregister_style( 'infinity-twentyeleven' ); // Infinite Scroll - Twentyeleven Theme
+  wp_deregister_style( 'infinity-twentytwelve' ); // Infinite Scroll - Twentytwelve Theme
+  wp_deregister_style( 'noticons' ); // Notes
+  wp_deregister_style( 'post-by-email' ); // Post by Email
+  wp_deregister_style( 'publicize' ); // Publicize
+  wp_deregister_style( 'sharedaddy' ); // Sharedaddy
+  wp_deregister_style( 'sharing' ); // Sharedaddy Sharing
+  wp_deregister_style( 'stats_reports_css' ); // Stats
+  wp_deregister_style( 'jetpack-widgets' ); // Widgets
+  wp_deregister_style( 'jetpack-slideshow' ); // Slideshows
+  wp_deregister_style( 'presentations' ); // Presentation shortcode
+  wp_deregister_style( 'jetpack-subscriptions' ); // Subscriptions
+  wp_deregister_style( 'tiled-gallery' ); // Tiled Galleries
+  wp_deregister_style( 'widget-conditions' ); // Widget Visibility
+  wp_deregister_style( 'jetpack_display_posts_widget' ); // Display Posts Widget
+  wp_deregister_style( 'gravatar-profile-widget' ); // Gravatar Widget
+  wp_deregister_style( 'widget-grid-and-list' ); // Top Posts widget
+  wp_deregister_style( 'jetpack-widgets' ); // Widgets
+}
+add_action('wp_print_styles', 'jeherve_remove_all_jp_css' );
+
+// Then, remove each CSS file, one at a time
+function jeherve_remove_all_jp_js() {
+  //wp_deregister_script( 'jquery.spin' ); // After the Deadline
+}
+add_action( 'wp_enqueue_scripts', 'jeherve_remove_all_jp_js', 20);
+	
 	
      // setup one language for admin and the other for theme
      // must be called before load_theme_textdomain()
@@ -122,11 +161,7 @@ function modern_minimal_scripts() {
 	
 	wp_deregister_script( 'jquery' );
 	wp_register_script( 'jquery', '//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', null, null, true );
-	
-	wp_register_script( 'modern-minimal-smoothState', 'https://rawgit.com/miguel-perez/jquery.smoothState.js/master/jquery.smoothState.js', array( 'jquery' ), null, true );
-	
-	wp_register_script( 'modern-minimal-instantclick', 'http://instantclick.io/v3.1.0/instantclick.min.js', array( 'jquery' ), null, true );
-	
+
 	wp_register_script( 'modern-minimal-owlcarousel', get_template_directory_uri() . '/js/owl.carousel.min.js', array( 'jquery' ), null, true );
 	
 	
@@ -141,8 +176,7 @@ function modern_minimal_scripts() {
 	
 	wp_enqueue_script( 'modern-minimal-modernizr' );	
 	wp_enqueue_script( 'jquery' );
-	//wp_enqueue_script( 'modern-minimal-smoothState' );
-	//wp_enqueue_script( 'modern-minimal-instantclick' );
+	
 	wp_enqueue_script( 'modern-minimal-owlcarousel' );
 	
 	wp_enqueue_script( 'modern-minimal-cv' );
@@ -417,6 +451,10 @@ endif;
 
 
 
+
+
+
+
 function my_theme_infinite_scroll_settings( $args ) {
     if ( is_array( $args ) )
 		$args['type'] = 'scroll';
@@ -431,3 +469,27 @@ add_filter( 'infinite_scroll_settings', 'my_theme_infinite_scroll_settings' );
 
 
 
+
+/*
+function wpa54064_inspect_scripts() {
+	global $wp_scripts, $wp_styles;
+	
+	echo '<div>';
+	
+	echo '<p>Styles: ';
+	foreach( $wp_styles->queue as $handle ) :
+        echo $handle . ' | ';
+    endforeach;
+	echo '</p>';
+	
+	
+	echo '<p>Scripts: ';
+    foreach( $wp_scripts->queue as $handle ) :
+        echo $handle . ' | ';
+    endforeach;
+	echo '</p>';
+	
+	echo '</div>';
+}
+add_action( 'wp_print_scripts', 'wpa54064_inspect_scripts' );
+*/

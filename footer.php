@@ -10,23 +10,10 @@
 
 
 
-</div><!-- #main -->
-
 <?php wp_footer(); ?>
 
-<?php
-if(is_archive()) {
-?>
-<script>
-$(window).load( function() {
-	$( document.body ).on( 'post-load', function () {
-			console.log('post-load');
-    });
-});
-</script>
-<?php	
-}
 
+<?php
 if(is_single() || is_page( array( 'oneletrajz', 'Önéletrajz' ) ) ) {
 ?>
 	<script>
