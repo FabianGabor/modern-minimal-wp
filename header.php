@@ -52,10 +52,14 @@
 	foreach ( $menu_items as $key => $menu_item ) {		
 		$thumb_url = wp_get_attachment_image_src( get_post_thumbnail_id( $menu_item->object_id ), 'medium' );
 		$thumb_url = $thumb_url[0];
-		if ( $thumb_url !== '' )
+		if ( $thumb_url !== null ) {
 			$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
-		else
-			$output .= '';
+		} else {				
+			if (function_exists('category_image_src')) {
+				$thumb_url = category_image_src( array( 'term_id' => $menu_item->object_id, 'size' => 'full' ) , false );
+				$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
+			}
+		}
 	}
 	echo $output;
 	?>
@@ -66,10 +70,14 @@
 		foreach ( $menu_items as $key => $menu_item ) {		
 			$thumb_url = wp_get_attachment_image_src( get_post_thumbnail_id( $menu_item->object_id ), 'full' );
 			$thumb_url = $thumb_url[0];
-			if ( $thumb_url !== '' )
+			if ( $thumb_url !== null ) {
 				$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
-			else
-				$output .= '';
+			} else {				
+				if (function_exists('category_image_src')) {
+					$thumb_url = category_image_src( array( 'term_id' => $menu_item->object_id, 'size' => 'full' ) , false );
+					$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
+				}
+			}
 		}
 		echo $output;
 		?>
