@@ -15,28 +15,6 @@
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
 
 <style>
-	#infinite-handle {
-		position: fixed;
-		bottom: 1rem;
-		left: 50%;
-		z-index: 99;
-	}
-	
-	/* Inifnite Scroll - Spinner */
-	.infinite-loader {
-		color: #fff !important;
-		position: fixed;
-		left: 50%;
-		bottom: 1.625rem;
-		text-indent: 0 !important;
-		//display: block !important;
-	}
-	.infinite-loader .spinner {
-		margin-left: 0 !important;
-	}
-	
-	
-
 	[data-src] { background-image: none !important; }
 	[data-src]:after { background-image: none !important; }
 
@@ -111,15 +89,7 @@
 		$bg_url = $bg_url[0];
 	?>
 		body::after {
-			background: url("<?php echo $bg_url; ?>") no-repeat fixed center center / cover transparent !important;
-			content: '';
-			display: block;
-			position: fixed;
-			width: 100%;
-			height: 100%;
-			opacity: .5;
-			z-index: -1;
-			filter: blur(5px);
+			background: url("<?php echo $bg_url; ?>") no-repeat fixed center center / cover transparent !important;			
 		}
 	
 		@media only screen and (min-width:64.063em) {

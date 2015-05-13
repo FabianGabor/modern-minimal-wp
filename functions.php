@@ -22,44 +22,49 @@ if ( ! function_exists( 'modern_minimal_setup' ) ) :
  */
 function modern_minimal_setup() {
 	
-// First, make sure Jetpack doesn't concatenate all its CSS
-add_filter( 'jetpack_implode_frontend_css', '__return_false' );
+	// First, make sure Jetpack doesn't concatenate all its CSS
+	add_filter( 'jetpack_implode_frontend_css', '__return_false' );
 
-// Then, remove each CSS file, one at a time
-function jeherve_remove_all_jp_css() {
-  wp_deregister_style( 'AtD_style' ); // After the Deadline
-  wp_deregister_style( 'jetpack_likes' ); // Likes
-  wp_deregister_style( 'jetpack_related-posts' ); //Related Posts
-  wp_deregister_style( 'jetpack-carousel' ); // Carousel
-  wp_deregister_style( 'grunion.css' ); // Grunion contact form
-  wp_deregister_style( 'the-neverending-homepage' ); // Infinite Scroll
-  wp_deregister_style( 'infinity-twentyten' ); // Infinite Scroll - Twentyten Theme
-  wp_deregister_style( 'infinity-twentyeleven' ); // Infinite Scroll - Twentyeleven Theme
-  wp_deregister_style( 'infinity-twentytwelve' ); // Infinite Scroll - Twentytwelve Theme
-  wp_deregister_style( 'noticons' ); // Notes
-  wp_deregister_style( 'post-by-email' ); // Post by Email
-  wp_deregister_style( 'publicize' ); // Publicize
-  wp_deregister_style( 'sharedaddy' ); // Sharedaddy
-  wp_deregister_style( 'sharing' ); // Sharedaddy Sharing
-  wp_deregister_style( 'stats_reports_css' ); // Stats
-  wp_deregister_style( 'jetpack-widgets' ); // Widgets
-  wp_deregister_style( 'jetpack-slideshow' ); // Slideshows
-  wp_deregister_style( 'presentations' ); // Presentation shortcode
-  wp_deregister_style( 'jetpack-subscriptions' ); // Subscriptions
-  wp_deregister_style( 'tiled-gallery' ); // Tiled Galleries
-  wp_deregister_style( 'widget-conditions' ); // Widget Visibility
-  wp_deregister_style( 'jetpack_display_posts_widget' ); // Display Posts Widget
-  wp_deregister_style( 'gravatar-profile-widget' ); // Gravatar Widget
-  wp_deregister_style( 'widget-grid-and-list' ); // Top Posts widget
-  wp_deregister_style( 'jetpack-widgets' ); // Widgets
-}
-add_action('wp_print_styles', 'jeherve_remove_all_jp_css' );
+	// Then, remove each CSS file, one at a time
+	function jeherve_remove_all_jp_css() {
+	  wp_deregister_style( 'AtD_style' ); // After the Deadline
+	  wp_deregister_style( 'jetpack_likes' ); // Likes
+	  wp_deregister_style( 'jetpack_related-posts' ); //Related Posts
+	  wp_deregister_style( 'jetpack-carousel' ); // Carousel
+	  wp_deregister_style( 'grunion.css' ); // Grunion contact form
+	  wp_deregister_style( 'the-neverending-homepage' ); // Infinite Scroll
+	  wp_deregister_style( 'infinity-twentyten' ); // Infinite Scroll - Twentyten Theme
+	  wp_deregister_style( 'infinity-twentyeleven' ); // Infinite Scroll - Twentyeleven Theme
+	  wp_deregister_style( 'infinity-twentytwelve' ); // Infinite Scroll - Twentytwelve Theme
+	  wp_deregister_style( 'noticons' ); // Notes
+	  wp_deregister_style( 'post-by-email' ); // Post by Email
+	  wp_deregister_style( 'publicize' ); // Publicize
+	  wp_deregister_style( 'sharedaddy' ); // Sharedaddy
+	  wp_deregister_style( 'sharing' ); // Sharedaddy Sharing
+	  wp_deregister_style( 'stats_reports_css' ); // Stats
+	  wp_deregister_style( 'jetpack-widgets' ); // Widgets
+	  wp_deregister_style( 'jetpack-slideshow' ); // Slideshows
+	  wp_deregister_style( 'presentations' ); // Presentation shortcode
+	  wp_deregister_style( 'jetpack-subscriptions' ); // Subscriptions
+	  wp_deregister_style( 'tiled-gallery' ); // Tiled Galleries
+	  wp_deregister_style( 'widget-conditions' ); // Widget Visibility
+	  wp_deregister_style( 'jetpack_display_posts_widget' ); // Display Posts Widget
+	  wp_deregister_style( 'gravatar-profile-widget' ); // Gravatar Widget
+	  wp_deregister_style( 'widget-grid-and-list' ); // Top Posts widget
+	  wp_deregister_style( 'jetpack-widgets' ); // Widgets
+	}
+	add_action('wp_print_styles', 'jeherve_remove_all_jp_css' );
 
-// Then, remove each CSS file, one at a time
-function jeherve_remove_all_jp_js() {
-  //wp_deregister_script( 'jquery.spin' ); // After the Deadline
-}
-add_action( 'wp_enqueue_scripts', 'jeherve_remove_all_jp_js', 20);
+	// Then, remove each CSS file, one at a time
+	function jeherve_remove_all_jp_js() {
+	  //wp_deregister_script( 'jquery.spin' ); // After the Deadline
+	}
+	add_action( 'wp_enqueue_scripts', 'jeherve_remove_all_jp_js', 20);
+	
+	
+	
+	add_filter( 'wpcf7_load_js', '__return_false' );
+	add_filter( 'wpcf7_load_css', '__return_false' );
 	
 	
      // setup one language for admin and the other for theme
@@ -179,14 +184,17 @@ function modern_minimal_scripts() {
 	
 	wp_enqueue_script( 'modern-minimal-owlcarousel' );
 	
-	wp_enqueue_script( 'modern-minimal-cv' );
+	if (is_page( array( 'oneletrajz', 'Önéletrajz' ))) {
+		wp_enqueue_script( 'modern-minimal-cv' );
+	}
 	wp_enqueue_script( 'modern-minimal-init' );
 	
 
-	
+	/*
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+	*/
 	
 }
 add_action( 'wp_enqueue_scripts', 'modern_minimal_scripts' );
@@ -381,7 +389,7 @@ function owl_gallery_shortcode( $output, $attr ) {
 			$image_width = $image_output[1];
 			$image_height = $image_output[2];
 			
-			$output .= '<div class="large-4 medium-4 small-6 columns box box-16x9 margin-bottom-1row">';
+			$output .= '<div class="large-4 medium-4 small-6 columns box box-1200x736">';
 			$output .= '<a class="content" href="'.$image_url.'">';
 			$output .= "<img src='" . $image_url . "' width='".$image_width."' height='".$image_height."' >";
 			$output .= '</a>';

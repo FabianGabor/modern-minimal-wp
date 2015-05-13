@@ -200,9 +200,10 @@ get_header(); ?>
 				<p>Jellemvonásait tekintve, Fábián Gábor eredményorientáltnak, kitartónak, pontosnak és felelősségtudatosnak bizonyult.</p>
 			
 				<footer>
-					<cite><a target="_blank" href="http://www.bungalow.net/hu/">SC Bungalow Net Internet Services SRL</a><br>
-					Mr. Willem van der Wilden<br>
-					CEO
+					<cite>
+						<a target="_blank" href="http://www.bungalow.net/hu/">SC Bungalow Net Internet Services SRL</a><br>
+						Mr. Willem van der Wilden<br>
+						CEO
 					</cite>
 				</footer>
 			</blockquote>

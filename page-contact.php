@@ -7,6 +7,14 @@
 $bg_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full' );
 $bg_url = $bg_url[0];
 
+if ( function_exists( 'wpcf7_enqueue_scripts' ) ) {
+	wpcf7_enqueue_scripts();
+}
+
+if ( function_exists( 'wpcf7_enqueue_styles' ) ) {
+	wpcf7_enqueue_styles();
+}
+
 get_header(); ?>
 
 	<div id="container" class="scene_element scene_element--fadein" >
