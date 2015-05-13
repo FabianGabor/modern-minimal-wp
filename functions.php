@@ -285,8 +285,8 @@ function owl_gallery_shortcode( $output, $attr ) {
         'itemtag'    => 'dl',
         'icontag'    => 'dt',
         'captiontag' => 'dd',
-        'columns'    => 3,
-        'size'       => 'full',
+        'columns'    => 1,
+        'size'       => 'large',
         'include'    => '',
         'exclude'    => ''
     ), $attr, 'gallery'));
