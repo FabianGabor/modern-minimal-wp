@@ -328,41 +328,19 @@ function owl_gallery_shortcode( $output, $attr ) {
         $captiontag = 'dd';
     if ( ! isset( $valid_tags[ $icontag ] ) )
         $icontag = 'dt';
-
-    $columns = intval($columns);
-
-    $selector = "gallery-{$instance}";
-
-    //$gallery_style = $gallery_div = '';
     
     $size_class = sanitize_html_class( $size );
-    //$gallery_div = "<div id='$selector' class='gallery galleryid-{$id} gallery-columns-{$columns} gallery-size-{$size_class}'>";
-    //$output = apply_filters( 'gallery_style', $gallery_div );
 	
 	$i = 0;
 	if (is_page_template('page-gallery.php')) {		
 		foreach ( $attachments as $id => $attachment ) {
-			/*
-			if ( ! empty( $attr['link'] ) && 'file' === $attr['link'] )
-				$image_output = wp_get_attachment_link( $id, $size, false, false );
-			elseif ( ! empty( $attr['link'] ) && 'none' === $attr['link'] )
-				$image_output = wp_get_attachment_image( $id, $size, false );
-			else
-				
-				$image_output = wp_get_attachment_link( $id, $size, true, false );
-			*/
-
 			$image_meta  = wp_get_attachment_metadata( $id );
 			
 			$image_output = wp_get_attachment_image_src( $id, $size );
 			$image_url = $image_output[0];
-			$image_width = $image_output[1];
-			$image_height = $image_output[2];
+			$image_width = $image_meta['sizes'][$size]['width'];
+			$image_height = $image_meta['sizes'][$size]['height'];
 			
-			$orientation = '';
-			if ( isset( $image_meta['height'], $image_meta['width'] ) )
-				$orientation = ( $image_meta['height'] > $image_meta['width'] ) ? 'portrait' : 'landscape';
-
 			$output .= "<{$itemtag} class='gallery-item owl-item-inner'>";
 			
 			$output .= "<img " . ($i==0 ? 'src' : 'data-src') . "='" . $image_url . "' width='".$image_width."' height='".$image_height."' >";
@@ -375,8 +353,7 @@ function owl_gallery_shortcode( $output, $attr ) {
 					" . wptexturize($attachment->post_excerpt) . "
 					</{$captiontag}>";
 			}
-			$output .= "</{$itemtag}>";
-			
+			$output .= "</{$itemtag}>";			
 			$i++;
 		}
 	}
