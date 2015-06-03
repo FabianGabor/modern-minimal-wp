@@ -52,6 +52,8 @@ function modern_minimal_setup() {
 	  wp_deregister_style( 'gravatar-profile-widget' ); // Gravatar Widget
 	  wp_deregister_style( 'widget-grid-and-list' ); // Top Posts widget
 	  wp_deregister_style( 'jetpack-widgets' ); // Widgets
+	  
+	  wp_deregister_script( 'devicepx' );
 	}
 	add_action('wp_print_styles', 'jeherve_remove_all_jp_css' );
 
@@ -157,12 +159,14 @@ add_action( 'widgets_init', 'modern_minimal_widgets_init' );
 /**
  * Enqueue scripts and styles.
  */
-function modern_minimal_scripts() {
-	wp_register_script( 'modern-minimal-modernizr', get_template_directory_uri() . '/js/modernizr.min.js', null, null, false );
+function modern_minimal_scripts() {	
+	wp_register_style( 'modern-minimal-fonts', '//fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,latin-ext', null, null, 'all' );
 	
-	wp_register_style( 'modern-minimal-fonts', '//fonts.googleapis.com/css?family=Roboto:400,100,700,900&subset=latin,latin-ext', null, null, 'all' );
+	wp_register_style( 'modern-minimal-fonts-all', '//fonts.googleapis.com/css?family=Roboto:400,100,700,900&subset=latin,latin-ext', null, null, 'all' );
 	
 	wp_register_style( 'modern-minimal-style', get_template_directory_uri() . '/layouts/style.css', null, null, 'screen' );
+	
+	wp_register_script( 'modern-minimal-modernizr', get_template_directory_uri() . '/js/modernizr.min.js', null, null, true );
 	
 	wp_deregister_script( 'jquery' );
 	wp_register_script( 'jquery', '//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', null, null, true );
@@ -175,8 +179,16 @@ function modern_minimal_scripts() {
 	
 	wp_register_script( 'modern-minimal-init', get_template_directory_uri() . '/js/init.min.js', array( 'jquery', 'modern-minimal-owlcarousel' ), null, true );
 	
+	/*
+	// loading fonts in footer async mode
+	if (is_page( array( 'oneletrajz', 'Önéletrajz' ))) {
+		wp_enqueue_style ( 'modern-minimal-fonts-all' );
+	}
+	else {
+		wp_enqueue_style ( 'modern-minimal-fonts' );
+	}
+	*/
 	
-	wp_enqueue_style ( 'modern-minimal-fonts' );
 	wp_enqueue_style ( 'modern-minimal-style' );
 	
 	wp_enqueue_script( 'modern-minimal-modernizr' );	
@@ -336,16 +348,35 @@ function owl_gallery_shortcode( $output, $attr ) {
 		foreach ( $attachments as $id => $attachment ) {
 			$image_meta  = wp_get_attachment_metadata( $id );
 			
+			$size = 'large';
 			$image_output = wp_get_attachment_image_src( $id, $size );
 			$image_url = $image_output[0];
 			$image_width = $image_meta['sizes'][$size]['width'];
 			$image_height = $image_meta['sizes'][$size]['height'];
 			
+			
+			$size = 'medium';
+			$image_output_medium = wp_get_attachment_image_src( $id, $size );
+			$image_url_medium = $image_output_medium[0];
+			$image_width_medium = $image_meta['sizes'][$size]['width'];
+			$image_height_medium = $image_meta['sizes'][$size]['height'];
+			
+			
+			//var_dump($image_output_medium);
+			
 			$output .= "<{$itemtag} class='gallery-item owl-item-inner'>";
 			
-			$output .= "<img " . ($i==0 ? 'src' : 'data-src') . "='" . $image_url . "' width='".$image_width."' height='".$image_height."' >";
+			//$output .= "<img " . ($i==0 ? 'src' : 'data-src') . "='" . $image_url . "' width='".$image_width."' height='".$image_height."' >";
 			
-			$output .= "<span " . ($i==0 ? '' : 'data-src') . " class='bg' style='background-image: url( $image_url );'></span>";
+			
+			$output .= '<img src="'.$image_url_medium.'"
+							srcset="'.$image_url.' 1024w, '.$image_url_medium.' 640w"
+							sizes="(min-width: 640px) 75vw, 100vw"
+							>';
+			
+			
+			$output .= "<span " . ($i==0 ? '' : 'data-src') . " class='bg hide-for-medium-up' style='background-image: url( $image_url_medium );'></span>";
+			$output .= "<span " . ($i==0 ? '' : 'data-src') . " class='bg show-for-medium-up' style='background-image: url( $image_url );'></span>";
 			
 			if ( $captiontag && trim($attachment->post_excerpt) ) {
 				$output .= "
@@ -363,8 +394,8 @@ function owl_gallery_shortcode( $output, $attr ) {
 			
 			$image_output = wp_get_attachment_image_src( $id, $size );
 			$image_url = $image_output[0];
-			$image_width = $image_output[1];
-			$image_height = $image_output[2];
+			$image_width = $image_meta['sizes'][$size]['width'];
+			$image_height = $image_meta['sizes'][$size]['height'];
 			
 			$output .= '<div class="large-4 medium-4 small-6 columns box box-1200x736">';
 			$output .= '<a class="content" href="'.$image_url.'">';

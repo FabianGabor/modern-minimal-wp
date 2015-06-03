@@ -23,30 +23,28 @@
 		height: <?php echo 100 / $menu->count; ?>% !important;
 	}
 	
-	<?php
-	$menu_items = wp_get_nav_menu_items( $menu );
-	
-	$output = '';
-	foreach ( $menu_items as $key => $menu_item ) {		
-		$thumb_url = wp_get_attachment_image_src( get_post_thumbnail_id( $menu_item->object_id ), 'medium' );
-		$thumb_url = $thumb_url[0];
-		if ( $thumb_url !== null ) {
-			$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
-		} else {				
-			if (function_exists('category_image_src')) {
-				$thumb_url = category_image_src( array( 'term_id' => $menu_item->object_id, 'size' => 'full' ) , false );
-				$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
-			}
-		}
+	@font-face {
+	  font-family: 'Roboto';
+	  font-style: normal;
+	  font-weight: 100;
+	  src: local('Roboto Thin'), local('Roboto-Thin'), url(https://fonts.gstatic.com/s/roboto/v15/e7MeVAyvogMqFwwl61PKhPesZW2xOQ-xsNqO47m55DA.woff2) format('woff2'), url(https://fonts.gstatic.com/s/roboto/v15/idLYXfFa1c7oAPILDl4z0fesZW2xOQ-xsNqO47m55DA.woff) format('woff');
 	}
-	echo $output;
-	?>
+	@font-face {
+	  font-family: 'Roboto';
+	  font-style: normal;
+	  font-weight: 400;
+	  src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/fIKu7GwZTy_12XzG_jt8eA.woff2) format('woff2'), url(https://fonts.gstatic.com/s/roboto/v15/Xyjz-jNkfiYuJf8UC3Lizw.woff) format('woff');
+	}
+
+	
+	<?php
+	if ( ! wp_is_mobile() ) {
+		$menu_items = wp_get_nav_menu_items( $menu );
 		
-	@media only screen and (min-width:64.063em) {
-		<?php
+		/*
 		$output = '';
 		foreach ( $menu_items as $key => $menu_item ) {		
-			$thumb_url = wp_get_attachment_image_src( get_post_thumbnail_id( $menu_item->object_id ), 'full' );
+			$thumb_url = wp_get_attachment_image_src( get_post_thumbnail_id( $menu_item->object_id ), 'medium' );
 			$thumb_url = $thumb_url[0];
 			if ( $thumb_url !== null ) {
 				$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
@@ -58,14 +56,49 @@
 			}
 		}
 		echo $output;
+		*/
 		?>
+			
+		@media only screen and (min-width:64.063em) {
+			<?php
+			$output = '';
+			foreach ( $menu_items as $key => $menu_item ) {		
+				$thumb_url = wp_get_attachment_image_src( get_post_thumbnail_id( $menu_item->object_id ), 'full' );
+				$thumb_url = $thumb_url[0];
+				if ( $thumb_url !== null ) {
+					$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
+				} else {				
+					if (function_exists('category_image_src')) {
+						$thumb_url = category_image_src( array( 'term_id' => $menu_item->object_id, 'size' => 'full' ) , false );
+						$output .= "#menu-item-$menu_item->ID::after { background-image: url('$thumb_url'); } ";
+					}
+				}
+			}
+			echo $output;
+			?>
+		}
+	<?php
 	}
+	?>
 	
 	<?php
 	if (is_page( array( 'oneletrajz', 'Önéletrajz' ))) {
 		$bg_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'medium' );
 		$bg_url = $bg_url[0];
-	?>
+	?>		
+		@font-face {
+		  font-family: 'Roboto';
+		  font-style: normal;
+		  font-weight: 900;
+		  src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v15/9_7S_tWeGDh5Pq3u05RVkltXRa8TVwTICgirnJhmVJw.woff2) format('woff2'), url(https://fonts.gstatic.com/s/roboto/v15/9_7S_tWeGDh5Pq3u05RVkj8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+		}
+		@font-face {
+		  font-family: 'Roboto';
+		  font-style: normal;
+		  font-weight: 700;
+		  src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v15/97uahxiqZRoncBaCEI3aW1tXRa8TVwTICgirnJhmVJw.woff2) format('woff2'), url(https://fonts.gstatic.com/s/roboto/v15/97uahxiqZRoncBaCEI3aWz8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+		}
+	
 		body::after {
 			background: url("<?php echo $bg_url; ?>") no-repeat fixed center center / cover transparent !important;
 		}
@@ -106,7 +139,7 @@
 	?>
 </style>
 
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/picturefill/2.3.1/picturefill.min.js" async></script>
 <?php wp_head(); ?>
 </head>
 
@@ -114,8 +147,12 @@
 
 
 	<header id="header" class="site-header" role="banner">
-
-		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><img id="logo" class="icon icon-circle icon-bordered" src="<?php echo get_template_directory_uri(); ?>/img/logo-100x100.png" width="100" height="100" alt="Fábián Gábor logo"></a>
+		<?php
+		$attachment_id = 1289; // attachment ID
+		$image_attributes = wp_get_attachment_image_src( $attachment_id ); 
+		?>
+	
+		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><img id="logo" class="icon icon-circle icon-bordered" src="<?php echo $image_attributes[0]; ?>" width="50" height="50" alt="Fábián Gábor logo"></a>
 		
 		<?php //the_title( '<h1 id="title" class="title">', '</h1>' ); ?>
 		<h1 id="title" class="title">
